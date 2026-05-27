@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team - VITAL</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">VITAL</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/team.html" class="active">Team</a></li>
+        <li><a href="/survey.html">Survey</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/apply.html">Apply</a></li>
+        <li><a href="/admin">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <h1>Meet Our Team</h1>
+  </section>
+
+  <section class="team-section">
+    <div class="container">
+      <div class="team-grid" id="teamGrid">
+        <p class="loading">Loading team members...</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    loadTeam();
+    
+    async function loadTeam() {
+      try {
+        const response = await fetch('/api/data');
+        const data = await response.json();
+        const teamGrid = document.getElementById('teamGrid');
+        
+        if (data.team.length > 0) {
+          teamGrid.innerHTML = data.team.map(member => `
+            <div class="team-card">
+              ${member.photo ? `<img src="/uploads/${member.photo}" alt="${member.name}" class="team-photo">` : '<div class="team-photo-placeholder">No Image</div>'}
+              <h3>${member.name}</h3>
+              <p class="role">${member.role}</p>
+              <p class="bio">${member.bio || ''}</p>
+            </div>
+          `).join('');
+        } else {
+          teamGrid.innerHTML = '<p>Team members coming soon...</p>';
+        }
+      } catch (error) {
+        console.error('Error loading team:', error);
+      }
+    }
+  </script>
+</body>
+</html>

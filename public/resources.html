@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources - VITAL</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">VITAL</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/team.html">Team</a></li>
+        <li><a href="/survey.html">Survey</a></li>
+        <li><a href="/resources.html" class="active">Resources</a></li>
+        <li><a href="/apply.html">Apply</a></li>
+        <li><a href="/admin">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <h1>Learning Resources</h1>
+  </section>
+
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid" id="resourcesGrid">
+        <p class="loading">Loading resources...</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    loadResources();
+    
+    async function loadResources() {
+      try {
+        const response = await fetch('/api/data');
+        const data = await response.json();
+        const resourcesGrid = document.getElementById('resourcesGrid');
+        
+        if (data.resources.length > 0) {
+          const grouped = {};
+          data.resources.forEach(r => {
+            if (!grouped[r.category]) grouped[r.category] = [];
+            grouped[r.category].push(r);
+          });
+          
+          resourcesGrid.innerHTML = Object.entries(grouped).map(([category, items]) => `
+            <div class="resource-category">
+              <h3>${category}</h3>
+              <ul>
+                ${items.map(item => `
+                  <li><a href="${item.link}" target="_blank">${item.title}</a></li>
+                `).join('')}
+              </ul>
+            </div>
+          `).join('');
+        } else {
+          resourcesGrid.innerHTML = '<p>Resources coming soon...</p>';
+        }
+      } catch (error) {
+        console.error('Error loading resources:', error);
+      }
+    }
+  </script>
+</body>
+</html>

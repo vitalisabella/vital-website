@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Survey - VITAL</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">VITAL</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/team.html">Team</a></li>
+        <li><a href="/survey.html" class="active">Survey</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/apply.html">Apply</a></li>
+        <li><a href="/admin">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <h1>Your Growth Journey</h1>
+    <p>Help us understand your experience with VITAL</p>
+  </section>
+
+  <section class="form-section">
+    <div class="container">
+      <form id="surveyForm" class="survey-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" required>
+        </div>
+
+        <div class="form-divider">
+          <h3>Before You Discovered VITAL</h3>
+        </div>
+
+        <div class="form-group">
+          <label>How would you describe your mentality before VITAL?</label>
+          <textarea name="beforeMentality" placeholder="Your thoughts and feelings..." rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>What challenges were you facing? (1 = Minimal, 5 = Severe)</label>
+          <div class="rating-group">
+            <input type="radio" name="beforeChallenges" value="1"> 1
+            <input type="radio" name="beforeChallenges" value="2"> 2
+            <input type="radio" name="beforeChallenges" value="3"> 3
+            <input type="radio" name="beforeChallenges" value="4"> 4
+            <input type="radio" name="beforeChallenges" value="5"> 5
+          </div>
+        </div>
+
+        <div class="form-divider">
+          <h3>During Your Time with VITAL</h3>
+        </div>
+
+        <div class="form-group">
+          <label>What experiences stood out to you? (Select all that apply)</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="experiences" value="mentorship"> Mentorship & Guidance</label>
+            <label><input type="checkbox" name="experiences" value="community"> Strong Community</label>
+            <label><input type="checkbox" name="experiences" value="growth"> Personal Growth</label>
+            <label><input type="checkbox" name="experiences" value="leadership"> Leadership Opportunities</label>
+            <label><input type="checkbox" name="experiences" value="support"> Emotional Support</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>How would you rate your growth during VITAL? (1 = No Growth, 5 = Significant)</label>
+          <div class="rating-group">
+            <input type="radio" name="duringGrowth" value="1"> 1
+            <input type="radio" name="duringGrowth" value="2"> 2
+            <input type="radio" name="duringGrowth" value="3"> 3
+            <input type="radio" name="duringGrowth" value="4"> 4
+            <input type="radio" name="duringGrowth" value="5"> 5
+          </div>
+        </div>
+
+        <div class="form-divider">
+          <h3>After Discovering VITAL</h3>
+        </div>
+
+        <div class="form-group">
+          <label>How has VITAL impacted your mentality?</label>
+          <textarea name="afterMentality" placeholder="Describe the changes you've experienced..." rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Mental Health & Well-being Improvement (1 = No Change, 5 = Major Improvement)</label>
+          <div class="rating-group">
+            <input type="radio" name="mentalHealthImprovement" value="1"> 1
+            <input type="radio" name="mentalHealthImprovement" value="2"> 2
+            <input type="radio" name="mentalHealthImprovement" value="3"> 3
+            <input type="radio" name="mentalHealthImprovement" value="4"> 4
+            <input type="radio" name="mentalHealthImprovement" value="5"> 5
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confidence Level Change (1 = Much Less, 5 = Much More)</label>
+          <div class="rating-group">
+            <input type="radio" name="confidenceChange" value="1"> 1
+            <input type="radio" name="confidenceChange" value="2"> 2
+            <input type="radio" name="confidenceChange" value="3"> 3
+            <input type="radio" name="confidenceChange" value="4"> 4
+            <input type="radio" name="confidenceChange" value="5"> 5
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>How would you recommend VITAL to others? (1 = Not Likely, 5 = Definitely)</label>
+          <div class="rating-group">
+            <input type="radio" name="recommendation" value="1"> 1
+            <input type="radio" name="recommendation" value="2"> 2
+            <input type="radio" name="recommendation" value="3"> 3
+            <input type="radio" name="recommendation" value="4"> 4
+            <input type="radio" name="recommendation" value="5"> 5
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Feedback</label>
+          <textarea name="additionalFeedback" placeholder="Any other thoughts or suggestions..." rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn">Submit Feedback</button>
+      </form>
+      <div id="successMessage" class="success-message" style="display: none;">Thank you for your feedback. Your responses help us grow.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(document.getElementById('surveyForm'));
+      const data = Object.fromEntries(formData);
+      
+      try {
+        const response = await fetch('/api/surveys', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+          document.getElementById('surveyForm').style.display = 'none';
+          document.getElementById('successMessage').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error submitting survey:', error);
+      }
+    });
+  </script>
+</body>
+</html>
