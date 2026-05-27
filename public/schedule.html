@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule - VITAL</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/team.html" class="nav-link">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link active">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <h1>Schedule & Events</h1>
+    <p>Join us for upcoming meetings, workshops, and events</p>
+  </section>
+
+  <section class="schedule-section">
+    <div class="container">
+      <div id="schedule-list" class="events-grid"></div>
+      <div id="no-events" class="empty-state">
+        <p>No events scheduled yet. Check back soon!</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let allEvents = [];
+
+    async function loadSchedule() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      allEvents = data.schedule.sort((a, b) => new Date(a.date) - new Date(b.date));
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const scheduleList = document.getElementById('schedule-list');
+      const noEvents = document.getElementById('no-events');
+      
+      if (allEvents.length === 0) {
+        scheduleList.innerHTML = '';
+        noEvents.style.display = 'block';
+        return;
+      }
+      
+      noEvents.style.display = 'none';
+      scheduleList.innerHTML = allEvents.map(event => {
+        const eventDate = new Date(event.date);
+        const formattedDate = eventDate.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          year: 'numeric'
+        });
+        const formattedTime = eventDate.toLocaleTimeString('en-US', { 
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        return `
+          <div class="event-card">
+            <div class="event-header">
+              <div class="event-date-badge">
+                <span class="month">${eventDate.toLocaleDateString('en-US', { month: 'short' })}</span>
+                <span class="day">${eventDate.getDate()}</span>
+              </div>
+              <div class="event-title">
+                <h3>${event.title}</h3>
+                <p class="event-time"><strong>Time:</strong> ${formattedTime}</p>
+              </div>
+            </div>
+            <div class="event-body">
+              <p class="event-description">${event.description}</p>
+              ${event.location ? `<p class="event-location"><strong>Location:</strong> ${event.location}</p>` : ''}
+              <p class="event-attendees"><strong>${event.interested ? event.interested.length : 0}</strong> interested</p>
+            </div>
+            <div class="event-footer">
+              <button class="btn btn-secondary" onclick="markInterest(${event.id})">Mark Interest</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function markInterest(eventId) {
+      const name = prompt('Your name:');
+      const email = prompt('Your email:');
+      
+      if (!name || !email) return;
+      
+      fetch(`/api/schedule/${eventId}/interest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          alert('Interest marked! We will see you there.');
+          loadSchedule();
+        }
+      });
+    }
+
+    loadSchedule();
+  </script>
+</body>
+</html>

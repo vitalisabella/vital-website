@@ -24,7 +24,6 @@ const upload = multer({ storage });
 
 const ADMIN_LOGIN = 'IsabellaVITAL7';
 const ADMIN_PASSWORD = '18lolisabella';
-
 const dataFile = 'data.json';
 
 function loadData() {
@@ -37,7 +36,7 @@ function loadData() {
     about: { title: 'Who Are We?', content: '', image: '' },
     resources: [],
     applications: [],
-    surveys: []
+    schedule: []
   };
 }
 
@@ -137,17 +136,51 @@ app.delete('/api/admin/resources/:id', verifyAdmin, (req, res) => {
   res.json({ success: true });
 });
 
+app.post('/api/admin/schedule', verifyAdmin, (req, res) => {
+  const data = loadData();
+  const event = {
+    id: Date.now(),
+    ...req.body,
+    interested: []
+  };
+  data.schedule.push(event);
+  saveData(data);
+  res.json({ success: true, event });
+});
+
+app.delete('/api/admin/schedule/:id', verifyAdmin, (req, res) => {
+  const data = loadData();
+  data.schedule = data.schedule.filter(s => s.id !== parseInt(req.params.id));
+  saveData(data);
+  res.json({ success: true });
+});
+
+app.post('/api/schedule/:id/interest', (req, res) => {
+  const data = loadData();
+  const event = data.schedule.find(e => e.id === parseInt(req.params.id));
+  if (event) {
+    const { name, email } = req.body;
+    const exists = event.interested.some(i => i.email === email);
+    if (!exists) {
+      event.interested.push({ name, email, timestamp: new Date() });
+    }
+    saveData(data);
+    res.json({ success: true, message: 'Interest marked!' });
+  } else {
+    res.status(404).json({ success: false, message: 'Event not found' });
+  }
+});
+
 app.post('/api/applications', (req, res) => {
   const data = loadData();
   const application = {
     id: Date.now(),
-    status: 'pending',
     ...req.body,
     submittedAt: new Date()
   };
   data.applications.push(application);
   saveData(data);
-  res.json({ success: true, message: 'Application submitted successfully' });
+  res.json({ success: true, message: 'Application submitted!' });
 });
 
 app.get('/api/admin/applications', verifyAdmin, (req, res) => {
@@ -155,37 +188,8 @@ app.get('/api/admin/applications', verifyAdmin, (req, res) => {
   res.json(data.applications);
 });
 
-app.put('/api/admin/applications/:id', verifyAdmin, (req, res) => {
-  const data = loadData();
-  const app = data.applications.find(a => a.id === parseInt(req.params.id));
-  if (app) {
-    app.status = req.body.status;
-    saveData(data);
-    res.json({ success: true });
-  } else {
-    res.status(404).json({ success: false });
-  }
-});
-
-app.post('/api/surveys', (req, res) => {
-  const data = loadData();
-  const survey = {
-    id: Date.now(),
-    ...req.body,
-    submittedAt: new Date()
-  };
-  data.surveys.push(survey);
-  saveData(data);
-  res.json({ success: true, message: 'Thank you for your feedback' });
-});
-
-app.get('/api/admin/surveys', verifyAdmin, (req, res) => {
-  const data = loadData();
-  res.json(data.surveys);
-});
-
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`VITAL Website running on http://localhost:${PORT}`);
-  console.log(`Admin Panel: http://localhost:${PORT}/admin`);
+  console.log(`Admin login: IsabellaVITAL7 / 18lolisabella`);
 });

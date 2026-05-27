@@ -4,44 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VITAL - Student Organization</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="container">
-      <div class="logo">VITAL</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/team.html">Team</a></li>
-        <li><a href="/survey.html">Survey</a></li>
-        <li><a href="/resources.html">Resources</a></li>
-        <li><a href="/apply.html">Apply</a></li>
-        <li><a href="/admin">Admin</a></li>
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/team.html" class="nav-link">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
       </ul>
     </div>
   </nav>
 
-  <section class="hero">
+  <section class="home-hero">
     <div class="hero-content">
-      <h1 class="hero-title">VITAL</h1>
-      <p class="hero-subtitle">Building tomorrow's leaders through mentorship and growth</p>
+      <h1 class="hero-title">Welcome to VITAL</h1>
+      <p class="hero-subtitle">Building Leaders. Growing Together. Supporting Mental Health.</p>
+      <div class="hero-cta">
+        <a href="/about.html" class="btn btn-primary">Learn More</a>
+        <a href="/schedule.html" class="btn btn-secondary">View Events</a>
+      </div>
     </div>
   </section>
 
   <section class="announcements">
     <div class="container">
-      <h2>Latest Updates</h2>
-      <div class="announcements-grid" id="announcementsGrid">
-        <p class="loading">Loading announcements...</p>
+      <h2>Latest Announcements</h2>
+      <div id="announcements-list" class="announcements-grid"></div>
+    </div>
+  </section>
+
+  <section class="quick-stats">
+    <div class="container">
+      <h2>Our Community</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="member-count">0</h3>
+          <p>Team Members</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="event-count">0</h3>
+          <p>Upcoming Events</p>
+        </div>
+        <div class="stat-card">
+          <h3>100%</h3>
+          <p>Student Focused</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
-  </footer>
-
-  <script src="app.js"></script>
+  <script>
+    async function loadData() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      
+      document.getElementById('member-count').textContent = data.team.length;
+      document.getElementById('event-count').textContent = data.schedule.length;
+      
+      const announcementsList = document.getElementById('announcements-list');
+      announcementsList.innerHTML = data.announcements.slice(0, 3).map(a => `
+        <div class="announcement-card">
+          ${a.image ? `<img src="/uploads/${a.image}" alt="${a.title}">` : ''}
+          <div class="announcement-content">
+            <h3>${a.title}</h3>
+            <p>${a.content}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    loadData();
+    
+    document.title = 'VITAL - Student Organization';
+  </script>
 </body>
 </html>
