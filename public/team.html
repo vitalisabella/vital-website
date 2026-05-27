@@ -4,66 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Team - VITAL</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="container">
-      <div class="logo">VITAL</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/team.html" class="active">Team</a></li>
-        <li><a href="/survey.html">Survey</a></li>
-        <li><a href="/resources.html">Resources</a></li>
-        <li><a href="/apply.html">Apply</a></li>
-        <li><a href="/admin">Admin</a></li>
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/team.html" class="nav-link active">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
       </ul>
     </div>
   </nav>
 
   <section class="page-header">
     <h1>Meet Our Team</h1>
+    <p>The leaders making VITAL possible</p>
   </section>
 
-  <section class="team-section">
+  <section class="schedule-section">
     <div class="container">
-      <div class="team-grid" id="teamGrid">
-        <p class="loading">Loading team members...</p>
+      <div id="team-list" class="events-grid"></div>
+      <div id="no-team" class="empty-state" style="display: none;">
+        <p>Team members coming soon. Check back later!</p>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer>
     <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
   </footer>
 
-  <script src="app.js"></script>
   <script>
-    loadTeam();
-    
     async function loadTeam() {
       try {
-        const response = await fetch('/api/data');
-        const data = await response.json();
-        const teamGrid = document.getElementById('teamGrid');
+        const res = await fetch('/api/data');
+        const data = await res.json();
+        const teamList = document.getElementById('team-list');
+        const noTeam = document.getElementById('no-team');
         
-        if (data.team.length > 0) {
-          teamGrid.innerHTML = data.team.map(member => `
-            <div class="team-card">
-              ${member.photo ? `<img src="/uploads/${member.photo}" alt="${member.name}" class="team-photo">` : '<div class="team-photo-placeholder">No Image</div>'}
-              <h3>${member.name}</h3>
-              <p class="role">${member.role}</p>
-              <p class="bio">${member.bio || ''}</p>
-            </div>
-          `).join('');
-        } else {
-          teamGrid.innerHTML = '<p>Team members coming soon...</p>';
+        if (data.team.length === 0) {
+          teamList.innerHTML = '';
+          noTeam.style.display = 'block';
+          return;
         }
+        
+        noTeam.style.display = 'none';
+        teamList.innerHTML = data.team.map(member => `
+          <div class="event-card">
+            <div style="${member.photo ? `background-image: url('/uploads/${member.photo}');` : 'background: linear-gradient(135deg, #2d5016 0%, #3d6b1f 100%);'} background-size: cover; background-position: center; height: 250px; border-radius: 10px 10px 0 0;"></div>
+            <div class="event-body">
+              <h3 style="color: #2d5016; margin-bottom: 0.25rem;">${member.name}</h3>
+              <p style="color: #52b788; font-weight: bold; margin-bottom: 1rem;">${member.role}</p>
+              <p style="color: #555;">${member.bio || 'No bio available'}</p>
+            </div>
+          </div>
+        `).join('');
       } catch (error) {
         console.error('Error loading team:', error);
       }
     }
+    
+    loadTeam();
   </script>
 </body>
 </html>

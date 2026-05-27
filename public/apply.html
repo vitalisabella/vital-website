@@ -4,20 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apply for Team Leader - VITAL</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="container">
-      <div class="logo">VITAL</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/team.html">Team</a></li>
-        <li><a href="/survey.html">Survey</a></li>
-        <li><a href="/resources.html">Resources</a></li>
-        <li><a href="/apply.html" class="active">Apply</a></li>
-        <li><a href="/admin">Admin</a></li>
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/team.html" class="nav-link">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link active">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
       </ul>
     </div>
   </nav>
@@ -29,124 +30,132 @@
 
   <section class="form-section">
     <div class="container">
-      <form id="applicationForm" class="application-form">
-        <div class="info-box">
-          <p>This application is for VITAL members who have been actively contributing and are ready to take on leadership responsibilities.</p>
+      <div class="form-wrapper">
+        <form id="application-form">
+          <div class="info-box">
+            <p>This application is for VITAL members who have been actively contributing and are ready to take on leadership responsibilities. Be thorough and honest in your responses.</p>
+          </div>
+
+          <div class="form-divider">
+            <h3>Personal Information</h3>
+          </div>
+          
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="fullName" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label>Grade/Year</label>
+            <select name="year" required>
+              <option value="">Select your year</option>
+              <option value="9">Grade 9</option>
+              <option value="10">Grade 10</option>
+              <option value="11">Grade 11</option>
+              <option value="12">Grade 12</option>
+            </select>
+          </div>
+
+          <div class="form-divider">
+            <h3>Leadership Application</h3>
+          </div>
+          
+          <div class="form-group">
+            <label>How long have you been with VITAL? (months)</label>
+            <input type="number" name="membershipLength" min="6" required>
+          </div>
+
+          <div class="form-group">
+            <label>Desired Position</label>
+            <select name="position" required>
+              <option value="">Select position</option>
+              <option value="VITAL Senior">VITAL Senior</option>
+              <option value="Team Leader">Team Leader</option>
+              <option value="Department Lead">Department Lead</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Why do you want to become a Team Leader?</label>
+            <textarea name="motivation" rows="4" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Describe your contributions to VITAL so far</label>
+            <textarea name="contributions" rows="4" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>What leadership qualities do you possess?</label>
+            <textarea name="qualities" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>How would you support and develop team members?</label>
+            <textarea name="teamSupport" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>What are your goals for the next year?</label>
+            <textarea name="goals" rows="3" required></textarea>
+          </div>
+
+          <div class="form-divider">
+            <h3>Additional Information</h3>
+          </div>
+
+          <div class="form-group">
+            <label>Have you held any leadership positions before? (in school or elsewhere)</label>
+            <textarea name="priorExperience" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>How would you handle conflicts within the team?</label>
+            <textarea name="conflictResolution" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>References (optional) - Teacher or senior member who can vouch for you</label>
+            <input type="text" name="reference" placeholder="Name and role">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </form>
+        <div id="application-success" class="success-message" style="display: none;">
+          Your application has been submitted! We will review it and contact you soon.
         </div>
-
-        <h3>Personal Information</h3>
-        
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" name="fullName" required>
-        </div>
-
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-          <label>Grade/Year</label>
-          <select name="year" required>
-            <option value="">Select your year</option>
-            <option value="9">Grade 9</option>
-            <option value="10">Grade 10</option>
-            <option value="11">Grade 11</option>
-            <option value="12">Grade 12</option>
-          </select>
-        </div>
-
-        <h3>Leadership Application</h3>
-        
-        <div class="form-group">
-          <label>How long have you been with VITAL? (months)</label>
-          <input type="number" name="membershipLength" min="6" required>
-        </div>
-
-        <div class="form-group">
-          <label>Desired Position</label>
-          <select name="position" required>
-            <option value="">Select position</option>
-            <option value="VITAL Senior">VITAL Senior</option>
-            <option value="Team Leader">Team Leader</option>
-            <option value="Department Lead">Department Lead</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Why do you want to become a Team Leader?</label>
-          <textarea name="motivation" placeholder="Share your motivation and goals..." rows="5" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Describe your contributions to VITAL so far</label>
-          <textarea name="contributions" placeholder="What projects have you worked on? How have you helped others?" rows="5" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>What leadership qualities do you possess?</label>
-          <textarea name="qualities" placeholder="Communication, mentoring, decision-making, etc..." rows="4" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>How would you support and develop team members?</label>
-          <textarea name="teamSupport" placeholder="Your approach to mentoring and team building..." rows="4" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>What are your goals for the next year?</label>
-          <textarea name="goals" placeholder="Personal and team goals..." rows="4" required></textarea>
-        </div>
-
-        <h3>Additional Information</h3>
-
-        <div class="form-group">
-          <label>Have you held any leadership positions before? (in school or elsewhere)</label>
-          <textarea name="priorExperience" placeholder="Describe any previous leadership experience..." rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>How would you handle conflicts within the team?</label>
-          <textarea name="conflictResolution" placeholder="Your approach..." rows="3" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>References (optional) - Teacher or senior member who can vouch for you</label>
-          <input type="text" name="reference" placeholder="Name and role">
-        </div>
-
-        <button type="submit" class="btn">Submit Application</button>
-      </form>
-      <div id="successMessage" class="success-message" style="display: none;">Your application has been submitted. We will review it and contact you soon.</div>
+      </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer>
     <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
   </footer>
 
-  <script src="app.js"></script>
   <script>
-    document.getElementById('applicationForm').addEventListener('submit', async (e) => {
+    document.getElementById('application-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      
-      const formData = new FormData(document.getElementById('applicationForm'));
+      const formData = new FormData(document.getElementById('application-form'));
       const data = Object.fromEntries(formData);
       
       try {
-        const response = await fetch('/api/applications', {
+        const res = await fetch('/api/applications', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
         
-        if (response.ok) {
-          document.getElementById('applicationForm').style.display = 'none';
-          document.getElementById('successMessage').style.display = 'block';
+        if (res.ok) {
+          document.getElementById('application-form').style.display = 'none';
+          document.getElementById('application-success').style.display = 'block';
         }
       } catch (error) {
-        console.error('Error submitting application:', error);
+        console.error('Error:', error);
       }
     });
   </script>

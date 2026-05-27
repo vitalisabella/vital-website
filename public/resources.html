@@ -4,74 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - VITAL</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="container">
-      <div class="logo">VITAL</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/team.html">Team</a></li>
-        <li><a href="/survey.html">Survey</a></li>
-        <li><a href="/resources.html" class="active">Resources</a></li>
-        <li><a href="/apply.html">Apply</a></li>
-        <li><a href="/admin">Admin</a></li>
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/team.html" class="nav-link">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link active">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
       </ul>
     </div>
   </nav>
 
   <section class="page-header">
     <h1>Learning Resources</h1>
+    <p>Tools and materials to support your growth</p>
   </section>
 
-  <section class="resources-section">
+  <section class="form-section">
     <div class="container">
-      <div class="resources-grid" id="resourcesGrid">
-        <p class="loading">Loading resources...</p>
+      <div id="resources-list" class="events-grid"></div>
+      <div id="no-resources" class="empty-state" style="display: none;">
+        <p>Resources coming soon. Stay tuned!</p>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer>
     <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
   </footer>
 
-  <script src="app.js"></script>
   <script>
-    loadResources();
-    
     async function loadResources() {
       try {
-        const response = await fetch('/api/data');
-        const data = await response.json();
-        const resourcesGrid = document.getElementById('resourcesGrid');
+        const res = await fetch('/api/data');
+        const data = await res.json();
+        const resourcesList = document.getElementById('resources-list');
+        const noResources = document.getElementById('no-resources');
         
-        if (data.resources.length > 0) {
-          const grouped = {};
-          data.resources.forEach(r => {
-            if (!grouped[r.category]) grouped[r.category] = [];
-            grouped[r.category].push(r);
-          });
-          
-          resourcesGrid.innerHTML = Object.entries(grouped).map(([category, items]) => `
-            <div class="resource-category">
-              <h3>${category}</h3>
-              <ul>
+        if (data.resources.length === 0) {
+          resourcesList.innerHTML = '';
+          noResources.style.display = 'block';
+          return;
+        }
+        
+        noResources.style.display = 'none';
+        const grouped = {};
+        data.resources.forEach(r => {
+          if (!grouped[r.category]) grouped[r.category] = [];
+          grouped[r.category].push(r);
+        });
+        
+        resourcesList.innerHTML = Object.entries(grouped).map(([category, items]) => `
+          <div class="event-card">
+            <div class="event-header">
+              <div style="flex: 1;">
+                <h3 style="color: #2d5016; margin: 0;">${category}</h3>
+              </div>
+            </div>
+            <div class="event-body">
+              <ul style="list-style: none; padding: 0;">
                 ${items.map(item => `
-                  <li><a href="${item.link}" target="_blank">${item.title}</a></li>
+                  <li style="margin-bottom: 1rem;">
+                    <a href="${item.link}" target="_blank" style="color: #52b788; text-decoration: none; font-weight: 500;">${item.title}</a>
+                  </li>
                 `).join('')}
               </ul>
             </div>
-          `).join('');
-        } else {
-          resourcesGrid.innerHTML = '<p>Resources coming soon...</p>';
-        }
+          </div>
+        `).join('');
       } catch (error) {
         console.error('Error loading resources:', error);
       }
     }
+    
+    loadResources();
   </script>
 </body>
 </html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - VITAL</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-panel">
+    <div class="admin-sidebar">
+      <div class="admin-logo">VITAL Admin</div>
+      <ul class="admin-menu" id="admin-menu">
+        <li><a href="#" data-section="login" class="admin-link active">Login</a></li>
+      </ul>
+    </div>
+
+    <div class="admin-content">
+      <div id="login-section" class="admin-section active">
+        <h2>Admin Login</h2>
+        <div class="admin-form">
+          <form id="login-form">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-success">Login</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <div id="dashboard-section" class="admin-section">
+        <div class="admin-header">
+          <h2>Dashboard</h2>
+          <button id="logout-btn" class="btn btn-danger">Logout</button>
+        </div>
+
+        <!-- Announcements -->
+        <div id="announcements-section" class="admin-section active">
+          <h2>Announcements</h2>
+          <div class="admin-form">
+            <form id="announcement-form">
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="ann-title" required>
+              </div>
+              <div class="form-group">
+                <label>Content</label>
+                <textarea id="ann-content" rows="4" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Thumbnail Image</label>
+                <input type="file" id="ann-image" accept="image/*">
+              </div>
+              <button type="submit" class="btn btn-success">Add Announcement</button>
+            </form>
+          </div>
+          <div class="admin-items">
+            <h3 style="color: #2d5016; margin-bottom: 1rem;">Current Announcements</h3>
+            <div id="announcements-list"></div>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div id="about-section" class="admin-section">
+          <h2>About Section</h2>
+          <div class="admin-form">
+            <form id="about-form">
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="about-title" value="Who Are We?">
+              </div>
+              <div class="form-group">
+                <label>Content (Edit your organization info here)</label>
+                <textarea id="about-content" rows="6" placeholder="Describe VITAL, its mission, and values..." required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Featured Image</label>
+                <input type="file" id="about-image" accept="image/*">
+              </div>
+              <button type="submit" class="btn btn-success">Save About</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div id="team-section" class="admin-section">
+          <h2>Team Members</h2>
+          <div class="admin-form">
+            <form id="team-form">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="team-name" required>
+              </div>
+              <div class="form-group">
+                <label>Role (e.g., Team Leader, Mentor)</label>
+                <input type="text" id="team-role" required>
+              </div>
+              <div class="form-group">
+                <label>Bio</label>
+                <textarea id="team-bio" rows="3" placeholder="Tell us about this team member..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Photo</label>
+                <input type="file" id="team-photo" accept="image/*">
+              </div>
+              <button type="submit" class="btn btn-success">Add Team Member</button>
+            </form>
+          </div>
+          <div class="admin-items">
+            <h3 style="color: #2d5016; margin-bottom: 1rem;">Team Members</h3>
+            <div id="team-list"></div>
+          </div>
+        </div>
+
+        <!-- Schedule -->
+        <div id="schedule-section" class="admin-section">
+          <h2>Events & Schedule</h2>
+          <div class="admin-form">
+            <form id="schedule-form">
+              <div class="form-group">
+                <label>Event Title</label>
+                <input type="text" id="schedule-title" required>
+              </div>
+              <div class="form-group">
+                <label>Date & Time</label>
+                <input type="datetime-local" id="schedule-date" required>
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="schedule-location" placeholder="e.g., Room 101" required>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea id="schedule-description" rows="3" placeholder="What is this event about?" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Add Event</button>
+            </form>
+          </div>
+          <div class="admin-items">
+            <h3 style="color: #2d5016; margin-bottom: 1rem;">Upcoming Events</h3>
+            <div id="schedule-list"></div>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div id="resources-section" class="admin-section">
+          <h2>Resources</h2>
+          <div class="admin-form">
+            <form id="resources-form">
+              <div class="form-group">
+                <label>Resource Title</label>
+                <input type="text" id="resource-title" required>
+              </div>
+              <div class="form-group">
+                <label>Category (e.g., Mentoring, Leadership)</label>
+                <input type="text" id="resource-category" required>
+              </div>
+              <div class="form-group">
+                <label>Link</label>
+                <input type="url" id="resource-link" required>
+              </div>
+              <button type="submit" class="btn btn-success">Add Resource</button>
+            </form>
+          </div>
+          <div class="admin-items">
+            <h3 style="color: #2d5016; margin-bottom: 1rem;">Resources</h3>
+            <div id="resources-list"></div>
+          </div>
+        </div>
+
+        <!-- Applications -->
+        <div id="applications-section" class="admin-section">
+          <h2>Team Leader Applications</h2>
+          <div class="admin-items">
+            <div id="applications-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let adminToken = null;
+
+    // Login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          adminToken = data.token;
+          document.getElementById('login-section').classList.remove('active');
+          document.getElementById('dashboard-section').classList.add('active');
+          document.getElementById('admin-menu').innerHTML = `
+            <li><a href="#" class="admin-link active" onclick="showSection('announcements')">Announcements</a></li>
+            <li><a href="#" class="admin-link" onclick="showSection('about')">About</a></li>
+            <li><a href="#" class="admin-link" onclick="showSection('team')">Team</a></li>
+            <li><a href="#" class="admin-link" onclick="showSection('schedule')">Schedule</a></li>
+            <li><a href="#" class="admin-link" onclick="showSection('resources')">Resources</a></li>
+            <li><a href="#" class="admin-link" onclick="showSection('applications')">Applications</a></li>
+          `;
+          loadAllData();
+        } else {
+          alert('Invalid credentials');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+    });
+
+    // Logout
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'logout-btn') {
+        adminToken = null;
+        document.getElementById('login-section').classList.add('active');
+        document.getElementById('dashboard-section').classList.remove('active');
+        document.getElementById('login-form').reset();
+      }
+    });
+
+    function showSection(section) {
+      event.preventDefault();
+      document.querySelectorAll('#dashboard-section > div').forEach(s => s.classList.remove('active'));
+      document.getElementById(section + '-section').classList.add('active');
+      document.querySelectorAll('.admin-menu .admin-link').forEach(l => l.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Announcements
+    document.getElementById('announcement-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('ann-title').value;
+      const content = document.getElementById('ann-content').value;
+      const imageFile = document.getElementById('ann-image').files[0];
+      
+      let imageName = '';
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadRes = await fetch('/api/admin/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${adminToken}` },
+          body: formData
+        });
+        const uploadData = await uploadRes.json();
+        imageName = uploadData.filename;
+      }
+
+      const res = await fetch('/api/admin/announcements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ title, content, image: imageName })
+      });
+
+      if (res.ok) {
+        document.getElementById('announcement-form').reset();
+        loadAnnouncements();
+      }
+    });
+
+    async function loadAnnouncements() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('announcements-list').innerHTML = data.announcements.map(a => `
+        <div class="admin-item">
+          <div>
+            <h4>${a.title}</h4>
+            <p>${a.content.substring(0, 100)}...</p>
+          </div>
+          <button onclick="deleteAnnouncement(${a.id})" class="btn btn-danger">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteAnnouncement(id) {
+      if (confirm('Delete this announcement?')) {
+        await fetch(`/api/admin/announcements/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadAnnouncements();
+      }
+    }
+
+    // About
+    document.getElementById('about-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('about-title').value;
+      const content = document.getElementById('about-content').value;
+      const imageFile = document.getElementById('about-image').files[0];
+      
+      let imageName = '';
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadRes = await fetch('/api/admin/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${adminToken}` },
+          body: formData
+        });
+        const uploadData = await uploadRes.json();
+        imageName = uploadData.filename;
+      }
+
+      const res = await fetch('/api/admin/about', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ title, content, image: imageName })
+      });
+
+      if (res.ok) {
+        alert('About section updated!');
+      }
+    });
+
+    async function loadAbout() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('about-title').value = data.about.title;
+      document.getElementById('about-content').value = data.about.content;
+    }
+
+    // Team
+    document.getElementById('team-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('team-name').value;
+      const role = document.getElementById('team-role').value;
+      const bio = document.getElementById('team-bio').value;
+      const photoFile = document.getElementById('team-photo').files[0];
+      
+      let photoName = '';
+      if (photoFile) {
+        const formData = new FormData();
+        formData.append('image', photoFile);
+        const uploadRes = await fetch('/api/admin/upload', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${adminToken}` },
+          body: formData
+        });
+        const uploadData = await uploadRes.json();
+        photoName = uploadData.filename;
+      }
+
+      const res = await fetch('/api/admin/team', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ name, role, bio, photo: photoName })
+      });
+
+      if (res.ok) {
+        document.getElementById('team-form').reset();
+        loadTeam();
+      }
+    });
+
+    async function loadTeam() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('team-list').innerHTML = data.team.map(t => `
+        <div class="admin-item">
+          <div>
+            <h4>${t.name}</h4>
+            <p><strong>${t.role}</strong></p>
+          </div>
+          <button onclick="deleteTeam(${t.id})" class="btn btn-danger">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteTeam(id) {
+      if (confirm('Delete this team member?')) {
+        await fetch(`/api/admin/team/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadTeam();
+      }
+    }
+
+    // Schedule
+    document.getElementById('schedule-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('schedule-title').value;
+      const date = document.getElementById('schedule-date').value;
+      const location = document.getElementById('schedule-location').value;
+      const description = document.getElementById('schedule-description').value;
+
+      const res = await fetch('/api/admin/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ title, date, location, description })
+      });
+
+      if (res.ok) {
+        document.getElementById('schedule-form').reset();
+        loadSchedule();
+      }
+    });
+
+    async function loadSchedule() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('schedule-list').innerHTML = data.schedule.map(s => `
+        <div class="admin-item">
+          <div>
+            <h4>${s.title}</h4>
+            <p><strong>When:</strong> ${new Date(s.date).toLocaleString()}</p>
+            <p><strong>Where:</strong> ${s.location}</p>
+            <p><strong>Interested:</strong> ${s.interested ? s.interested.length : 0}</p>
+          </div>
+          <button onclick="deleteSchedule(${s.id})" class="btn btn-danger">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteSchedule(id) {
+      if (confirm('Delete this event?')) {
+        await fetch(`/api/admin/schedule/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadSchedule();
+      }
+    }
+
+    // Resources
+    document.getElementById('resources-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('resource-title').value;
+      const category = document.getElementById('resource-category').value;
+      const link = document.getElementById('resource-link').value;
+
+      const res = await fetch('/api/admin/resources', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ title, category, link })
+      });
+
+      if (res.ok) {
+        document.getElementById('resources-form').reset();
+        loadResources();
+      }
+    });
+
+    async function loadResources() {
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      document.getElementById('resources-list').innerHTML = data.resources.map(r => `
+        <div class="admin-item">
+          <div>
+            <h4>${r.title}</h4>
+            <p><strong>${r.category}</strong> - <a href="${r.link}" target="_blank" style="color: #52b788;">View</a></p>
+          </div>
+          <button onclick="deleteResource(${r.id})" class="btn btn-danger">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteResource(id) {
+      if (confirm('Delete this resource?')) {
+        await fetch(`/api/admin/resources/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadResources();
+      }
+    }
+
+    // Applications
+    async function loadApplications() {
+      const res = await fetch('/api/admin/applications', {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const applications = await res.json();
+      document.getElementById('applications-list').innerHTML = applications.length === 0 ? '<p>No applications yet</p>' :
+        applications.map(app => `
+          <div class="admin-item">
+            <div>
+              <h4>${app.fullName}</h4>
+              <p><strong>Position:</strong> ${app.position}</p>
+              <p><strong>Email:</strong> ${app.email}</p>
+              <p><strong>Motivation:</strong> ${app.motivation.substring(0, 100)}...</p>
+            </div>
+          </div>
+        `).join('');
+    }
+
+    async function loadAllData() {
+      loadAnnouncements();
+      loadAbout();
+      loadTeam();
+      loadSchedule();
+      loadResources();
+      loadApplications();
+    }
+  </script>
+</body>
+</html>

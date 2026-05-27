@@ -4,65 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About - VITAL</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="container">
-      <div class="logo">VITAL</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html" class="active">About</a></li>
-        <li><a href="/team.html">Team</a></li>
-        <li><a href="/survey.html">Survey</a></li>
-        <li><a href="/resources.html">Resources</a></li>
-        <li><a href="/apply.html">Apply</a></li>
-        <li><a href="/admin">Admin</a></li>
+    <div class="nav-container">
+      <a href="/" class="logo">VITAL</a>
+      <ul class="nav-menu">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about.html" class="nav-link active">About</a></li>
+        <li><a href="/team.html" class="nav-link">Team</a></li>
+        <li><a href="/schedule.html" class="nav-link">Schedule</a></li>
+        <li><a href="/survey.html" class="nav-link">Survey</a></li>
+        <li><a href="/resources.html" class="nav-link">Resources</a></li>
+        <li><a href="/apply.html" class="nav-link">Apply</a></li>
+        <li><a href="/admin.html" class="nav-link admin-link">Admin</a></li>
       </ul>
     </div>
   </nav>
 
   <section class="page-header">
-    <h1>Who Are We?</h1>
+    <h1>About VITAL</h1>
+    <p>Learn about our mission and vision</p>
   </section>
 
-  <section class="about-section">
+  <section class="form-section">
     <div class="container">
-      <div class="about-content" id="aboutContent">
-        <p class="loading">Loading about information...</p>
+      <div class="form-wrapper">
+        <div id="about-display" class="info-box">
+          <h2 id="about-title">Who Are We?</h2>
+          <p id="about-content" style="margin-top: 1rem; line-height: 1.8;">Loading information...</p>
+          <div id="about-image-container" style="margin-top: 2rem;"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
+  <footer>
     <p>&copy; 2025 VITAL Student Organization. All rights reserved.</p>
   </footer>
 
-  <script src="app.js"></script>
   <script>
-    loadAbout();
-    
     async function loadAbout() {
       try {
-        const response = await fetch('/api/data');
-        const data = await response.json();
-        const aboutContent = document.getElementById('aboutContent');
+        const res = await fetch('/api/data');
+        const data = await res.json();
         
-        if (data.about.content) {
-          aboutContent.innerHTML = `
-            ${data.about.image ? `<img src="/uploads/${data.about.image}" alt="About" class="about-image">` : ''}
-            <div class="about-text">
-              <h2>${data.about.title}</h2>
-              <p>${data.about.content}</p>
-            </div>
-          `;
-        } else {
-          aboutContent.innerHTML = '<p>Coming soon...</p>';
+        document.getElementById('about-title').textContent = data.about.title || 'Who Are We?';
+        document.getElementById('about-content').textContent = data.about.content || 'Information coming soon. Ask an admin to add content.';
+        
+        if (data.about.image) {
+          document.getElementById('about-image-container').innerHTML = `<img src="/uploads/${data.about.image}" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">`;
         }
       } catch (error) {
         console.error('Error loading about:', error);
       }
     }
+    
+    loadAbout();
   </script>
 </body>
 </html>
